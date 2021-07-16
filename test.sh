@@ -50,8 +50,7 @@ while ! check_mockserver
 do
   echo "Waiting mockserver to be ready. Trying again in 2s. Try #$counter"
   sleep 2
-  echo "After sleep"
-  [[ counter -eq $max_retry ]] && echo "Mockserver failed to start!" && exit 1
+  [[ counter -eq $max_retry ]] && echo "Mockserver failed to start!"
   ((counter++))
 done
 
