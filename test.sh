@@ -20,13 +20,12 @@ clean_up () {
 trap clean_up EXIT
 
 function check_logs {
-  curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json
+  (curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json)
   return $?
 }
 
 function check_mockserver {
-  echo "Checking mock server"
-  curl -X PUT --fail "http://localhost:1080/mockserver/status"
+  (curl -X PUT --fail "http://localhost:1080/mockserver/status")
   return $?
 }
 
