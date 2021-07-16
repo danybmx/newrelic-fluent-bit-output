@@ -1,5 +1,5 @@
 #!/bin/bash
-# set -e
+set -e
 clean_up () {
     ARG=$?
 
@@ -20,13 +20,19 @@ clean_up () {
 trap clean_up EXIT
 
 function check_logs {
+  set +e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json
-  return $?
+  RESULT=$?
+  set -e
+  return $RESULT
 }
 
 function check_mockserver {
+  set +e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/status"
-  return $?
+  RESULT=$?
+  set -e
+  return $RESULT
 }
 
 # Create testdata folder and log file
