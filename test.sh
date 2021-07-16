@@ -20,18 +20,14 @@ clean_up () {
 trap clean_up EXIT
 
 function check_logs {
-  unset -e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json
   RESULT=$?
-  set -e
   return $RESULT
 }
 
 function check_mockserver {
-  unset -e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/status"
   RESULT=$?
-  set -e
   return $RESULT
 }
 
@@ -51,13 +47,14 @@ docker-compose -f ./test/docker-compose.yml up -d
 # Waiting mockserver to be ready
 max_retry=10
 counter=0
-while ! check_mockserver
+until check_mockserver
 do
   echo "Waiting mockserver to be ready. Trying again in 2s. Try #$counter"
   sleep 2
-  [[ counter -eq $max_retry ]] && echo "Mockserver failed to start!" && exit 1
-  ((counter++))
+  [[ $counter -eq $max_retry ]] && echo "Mockserver failed to start!" && exit 1
+  counter+=1
 done
+echo "done"
 
 # Sending some logs
 echo "Sending logs an waiting for arrive"
@@ -73,11 +70,11 @@ touch ./test/testdata/fbtest.log
 
 max_retry=10
 counter=0
-while ! check_logs
+until check_logs
 do
   echo "Logs not found trying again in 2s. Try #$counter"
   sleep 2
-  [[ counter -eq $max_retry ]] && echo "Logs do not reach the server!" && exit 1
-  ((counter++))
+  [[ $counter -eq $max_retry ]] && echo "Logs do not reach the server!" && exit 1
+  counter+=1
 done
 echo "Success!"
