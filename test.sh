@@ -20,7 +20,7 @@ clean_up () {
 trap clean_up EXIT
 
 function check_logs {
-  set +e
+  unset -e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json
   RESULT=$?
   set -e
@@ -28,7 +28,7 @@ function check_logs {
 }
 
 function check_mockserver {
-  set +e
+  unset -e
   curl -X PUT -s --fail "http://localhost:1080/mockserver/status"
   RESULT=$?
   set -e
