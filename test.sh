@@ -20,13 +20,13 @@ clean_up () {
 trap clean_up EXIT
 
 function check_logs {
-  curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json
+  curl -X PUT -s --fail "http://localhost:1080/mockserver/verify" -d @test/verification.json >> /dev/null
   RESULT=$?
   return $RESULT
 }
 
 function check_mockserver {
-  curl -X PUT -s --fail "http://localhost:1080/mockserver/status"
+  curl -X PUT -s --fail "http://localhost:1080/mockserver/status" >> /dev/null
   RESULT=$?
   return $RESULT
 }
@@ -54,7 +54,6 @@ do
   [[ $counter -eq $max_retry ]] && echo "Mockserver failed to start!" && exit 1
   counter+=1
 done
-echo "done"
 
 # Sending some logs
 echo "Sending logs an waiting for arrive"
