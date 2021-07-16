@@ -41,6 +41,8 @@ if [ ${CI:-no} = "no" ]; then
   docker build -f ${DOCKERFILE:-Dockerfile} -t fb-output-plugin .
 fi
 
+echo "Docker image id $(docker image inspect fb-output-plugin -f \"{{.ID}}\")" 
+
 echo "Starting docker compose"
 docker-compose -f ./test/docker-compose.yml up -d
 
