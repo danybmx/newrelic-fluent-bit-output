@@ -25,7 +25,8 @@ function check_logs {
 }
 
 function check_mockserver {
-  curl -X PUT -s --fail "http://localhost:1080/mockserver/status" >> /dev/null
+  echo "Checking mock server"
+  curl -X PUT -s --fail "http://localhost:1080/mockserver/status"
   return $?
 }
 
